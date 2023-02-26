@@ -21,17 +21,22 @@ class Truck:
                 return package
         return None
 
+    def getPackageByIndex(self, index):
+        if index < len(self.packageList):
+            return self.packageList[index]
+        return None
+
     def printPackages(self):
         for package in self.packageList:
             print(package)
 
-    def deliverPackage(self, distance):
+    def deliverPackage(self, distance, index):
         self.distanceTraveled += float(distance)
-        deliveredPackage = self.packageList.pop(0)
-        deliveredPackage.status = "Delivered"
+        self.packageList[index].status = "Delivered"
+        # deliveredPackage = self.packageList.pop(0)
+        # deliveredPackage.status = "Delivered"
 
     def updateTime(self):
         SPEED = 18
         spentTime = self.distanceTraveled / SPEED
-        self.time += spentTime
-
+        self.time = 8.00 + spentTime
