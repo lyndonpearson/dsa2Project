@@ -1,6 +1,3 @@
-from readCSV import ChainingHashTable, loadPackageData, loadDistanceData, loadAddressData, Package
-
-
 class Truck:
     def __init__(self, ID):
         self.ID = ID
@@ -9,13 +6,14 @@ class Truck:
         self.time = 8.00
         self.distanceTraveled = 0.0
         self.location = "4001 South 700 East"
+        self.startingTime = 8.00
 
     def loadPackage(self, package):
         if len(self.packageList) < self.CAPACITY:
             self.packageList.append(package)
             package.status = "In Transit"
 
-    def getPackage(self, packageID):
+    def getPackageByID(self, packageID):
         for package in self.packageList:
             if package.ID == packageID:
                 return package
@@ -30,13 +28,20 @@ class Truck:
         for package in self.packageList:
             print(package)
 
-    def deliverPackage(self, distance, index):
+    def deliverPackage(self, distance, ID):
         self.distanceTraveled += float(distance)
-        self.packageList[index].status = "Delivered"
-        # deliveredPackage = self.packageList.pop(0)
-        # deliveredPackage.status = "Delivered"
+        self.location = self.getPackageByID(ID).getAddress()
+        self.getPackageByID(ID).status = "Delivered"
+        print("Package ID: " + str(self.getPackageByID(ID).getID()) +
+              " has been delivered at time " + str(self.time))
+        self.packageList.remove(self.getPackageByID(ID))
+
+    def setStartingTime(self, time):
+        self.startingTime = time
 
     def updateTime(self):
         SPEED = 18
         spentTime = self.distanceTraveled / SPEED
-        self.time = 8.00 + spentTime
+        self.time = self.startingTime + spentTime
+
+

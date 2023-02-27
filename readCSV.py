@@ -1,8 +1,3 @@
-# C950 - Webinar-2 - Getting Greedy, who moved my data?
-# W-2_ChainingHashTable_zyBooks_Key-Value_CSV_Greedy.py
-# Ref: zyBooks: Figure 7.8.2: Hash table using chaining.
-# Ref: zyBooks: 3.3.1: MakeChange greedy algorithm.
-
 import csv
 import math
 
@@ -78,6 +73,15 @@ class Package:
     def getAddress(self):
         return self.address
 
+    def setAddress(self, address):
+        self.address = address
+
+    def getStatus(self):
+        return self.status
+
+    def getID(self):
+        return self.ID
+
     def __str__(self):  # overwite print(Movie) otherwise it will print object reference 
         return "%s, %s, %s, %s, %s, %s, %s, %s" % (self.ID, self.address, self.city, self.state, self.zip,
                                                    self.delivery, self.mass, self.notes)
@@ -122,7 +126,9 @@ def loadDistanceData(distanceDataInput):
         for line in range(5):
             next(locationData)  # skip header
         for row in locationData:
-            distanceDataInput.append(row[2:])
+            readString = row[2:]
+            intConversion = list(map(float,readString))
+            distanceDataInput.append(intConversion)
 
 
 def loadAddressData(addressDataInput):
@@ -132,7 +138,8 @@ def loadAddressData(addressDataInput):
             next(locationData)  # skip header
         for row in locationData:
             # Currently extracting street address only. Eliminate second index for zip
-            addressDataInput.append(row[1][:-8])
+            addressDataInput.append(row[1][1:-8])
+
 
 
 
