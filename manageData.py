@@ -1,9 +1,11 @@
 import csv
 import math
 
+from Package import Package
+
 
 # HashTable class using chaining.
-class ChainingHashTable:
+class PackageHashTable:
     # Constructor with optional initial capacity parameter.
     # Assigns all buckets with an empty list.
     def __init__(self, initial_capacity=39):
@@ -11,6 +13,17 @@ class ChainingHashTable:
         self.table = []
         for i in range(initial_capacity):
             self.table.append([])
+
+    def printPackageStatuses(self, key):
+        # get the bucket list where this key would be.
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+
+        # search for the key in the bucket list
+        for kv in bucket_list:
+            # print (key_value)
+            if kv[0] == key:
+                print(kv[1].getStatus())  # value
 
     # Inserts a new item into the hash table.
     def insert(self, key, item):  # does both insert and update
@@ -36,7 +49,6 @@ class ChainingHashTable:
         # get the bucket list where this key would be.
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]
-        # print(bucket_list)
 
         # search for the key in the bucket list
         for kv in bucket_list:
@@ -58,44 +70,6 @@ class ChainingHashTable:
                 bucket_list.remove([kv[0], kv[1]])
 
 
-class Package:
-    def __init__(self, ID, address, city, state, zip, delivery, mass, notes, status):
-        self.ID = ID
-        self.address = address
-        self.city = city
-        self.state = state
-        self.zip = zip
-        self.delivery = delivery
-        self.mass = mass
-        self.notes = notes
-        self.status = status
-
-    def getAddress(self):
-        return self.address
-
-    def setAddress(self, address):
-        self.address = address
-
-    def getStatus(self):
-        return self.status
-
-    def getID(self):
-        return self.ID
-
-    def __str__(self):  # overwite print(Movie) otherwise it will print object reference 
-        return "%s, %s, %s, %s, %s, %s, %s, %s" % (self.ID, self.address, self.city, self.state, self.zip,
-                                                   self.delivery, self.mass, self.notes)
-
-
-class Location:
-    def __init__(self, address, distance):
-        self.address = address
-        self.distance = distance
-
-    def __str__(self):  # overwite print(Movie) otherwise it will print object reference
-        return "%s, %s" % (self.address, self.distance)
-
-
 def loadPackageData(fileName, hashTable):
     with open(fileName) as packageFile:
         packageData = csv.reader(packageFile, delimiter=',')
@@ -113,7 +87,7 @@ def loadPackageData(fileName, hashTable):
 
             # movie object
             newPackage = Package(packageID, packageAddress, packageCity, packageState, packageZip,
-                                 packageDelivery, packageMass, packageNotes, "At HUB")
+                                 packageDelivery, packageMass, packageNotes, " at HUB")
             # print(newPackage)
 
             # insert it into the hash table
@@ -127,7 +101,7 @@ def loadDistanceData(distanceDataInput):
             next(locationData)  # skip header
         for row in locationData:
             readString = row[2:]
-            intConversion = list(map(float,readString))
+            intConversion = list(map(float, readString))
             distanceDataInput.append(intConversion)
 
 
@@ -139,7 +113,3 @@ def loadAddressData(addressDataInput):
         for row in locationData:
             # Currently extracting street address only. Eliminate second index for zip
             addressDataInput.append(row[1][1:-8])
-
-
-
-

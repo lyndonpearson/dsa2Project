@@ -11,7 +11,7 @@ class Truck:
     def loadPackage(self, package):
         if len(self.packageList) < self.CAPACITY:
             self.packageList.append(package)
-            package.status = "In Transit"
+            package.setStatus("Package ID " + str(package.getID()) + " en route")
 
     def getPackageByID(self, packageID):
         for package in self.packageList:
@@ -31,7 +31,7 @@ class Truck:
     def deliverPackage(self, distance, ID):
         self.distanceTraveled += float(distance)
         self.location = self.getPackageByID(ID).getAddress()
-        self.getPackageByID(ID).status = "Delivered"
+        self.getPackageByID(ID).setStatus(("Package ID " + str(ID) + " delivered at " + str(self.time)))
         print("Package ID: " + str(self.getPackageByID(ID).getID()) +
               " has been delivered at time " + str(self.time))
         self.packageList.remove(self.getPackageByID(ID))
