@@ -1,7 +1,3 @@
-from Truck import Truck
-
-
-# Manually setting package ID 25&26 address isn't pretty but it works
 
 def GreedyAlgorithm(Truck, addressList, distanceList):
     currentMinimum = 9999
@@ -14,6 +10,4 @@ def GreedyAlgorithm(Truck, addressList, distanceList):
         if distanceList[startIndex][deliverIndex] < currentMinimum:
             currentMinimum = distanceList[startIndex][deliverIndex]
             currentID = Truck.getPackageByIndex(i).getID()
-    # currentTime += Truck.updateTime(currentMinimum)
-    #Truck.deliverPackage(currentMinimum, currentID, currentTime)
     return currentMinimum, currentID

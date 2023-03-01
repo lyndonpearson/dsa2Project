@@ -24,7 +24,3 @@ class Package:
 
     def getID(self):
         return self.ID
-
-    def __str__(self):  # overwite print(Movie) otherwise it will print object reference
-        return "%s, %s, %s, %s, %s, %s, %s, %s" % (self.ID, self.address, self.city, self.state, self.zip,
-                                                   self.delivery, self.mass, self.notes)
