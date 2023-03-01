@@ -1,3 +1,11 @@
+def timeFloatToString(inputString):
+    hours = int(inputString)
+    minutes = (inputString * 60) % 60
+    seconds = (inputString * 3600) % 60
+    timeStamp = "%d:%02d:%02d" % (hours, minutes, seconds)
+    return timeStamp
+
+
 class Truck:
     def __init__(self, ID):
         self.ID = ID
@@ -6,12 +14,18 @@ class Truck:
         self.time = 8.00
         self.distanceTraveled = 0.0
         self.location = "4001 South 700 East"
-        self.startingTime = 8.00
+        self.status = 0
 
     def loadPackage(self, package):
         if len(self.packageList) < self.CAPACITY:
             self.packageList.append(package)
             package.setStatus("Package ID " + str(package.getID()) + " en route")
+
+    def setStatus(self, updateStatus):
+        self.status = updateStatus
+
+    def getStatus(self):
+        return self.status
 
     def getPackageByID(self, packageID):
         for package in self.packageList:
@@ -28,20 +42,14 @@ class Truck:
         for package in self.packageList:
             print(package)
 
-    def deliverPackage(self, distance, ID):
+    def deliverPackage(self, distance, ID, currentTime):
         self.distanceTraveled += float(distance)
         self.location = self.getPackageByID(ID).getAddress()
-        self.getPackageByID(ID).setStatus(("Package ID " + str(ID) + " delivered at " + str(self.time)))
-        print("Package ID: " + str(self.getPackageByID(ID).getID()) +
-              " has been delivered at time " + str(self.time))
+        self.getPackageByID(ID).setStatus(
+            ("Package ID " + str(ID) + " delivered at " + timeFloatToString(currentTime)))
         self.packageList.remove(self.getPackageByID(ID))
 
-    def setStartingTime(self, time):
-        self.startingTime = time
-
-    def updateTime(self):
+    def updateTime(self, distance):
         SPEED = 18
-        spentTime = self.distanceTraveled / SPEED
-        self.time = self.startingTime + spentTime
-
-
+        legTime = distance / SPEED
+        return legTime
