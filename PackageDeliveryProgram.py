@@ -1,4 +1,4 @@
-from RouteAndDeliver import RouteAndDeliver
+from RouteAndDeliver import RouteAndDeliver, returnToHub
 from Truck import Truck, timeFloatToString
 from manageData import loadPackageData, loadDistanceData, loadAddressData
 
@@ -44,13 +44,16 @@ def packageDeliveryProgram(hashTableInput, printTime=9999.0):
         if currentTime > 9.084:
             currentTime = RouteAndDeliver(Truck3, addressData, distanceData, currentTime, printTime, hashTableInput)
     Truck1.setStatus(1)
+    currentTime = returnToHub(Truck1, addressData, distanceData, currentTime)
     while len(Truck3.packageList) > 0 and currentTime is not None:
         currentTime = RouteAndDeliver(Truck3, addressData, distanceData, currentTime, printTime, hashTableInput)
         currentTime = RouteAndDeliver(Truck2, addressData, distanceData, currentTime, printTime, hashTableInput)
     Truck3.setStatus(1)
+    currentTime = returnToHub(Truck3, addressData, distanceData, currentTime)
     while len(Truck2.packageList) > 0 and currentTime is not None:
         currentTime = RouteAndDeliver(Truck2, addressData, distanceData, currentTime, printTime, hashTableInput)
     Truck2.setStatus(1)
+    currentTime = returnToHub(Truck2, addressData, distanceData, currentTime)
     if Truck1.getStatus() and Truck2.getStatus() and Truck3.getStatus() and currentTime is not None:
         if printTime < 9999.0:
             for package in range(41):

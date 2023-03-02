@@ -38,13 +38,23 @@ class Truck:
             return self.packageList[index]
         return None
 
+    def setLocation(self, updateLocation):
+        self.location = updateLocation
+
+    def getLocation(self):
+        return self.location
+
     def printPackages(self):
         for package in self.packageList:
             print(package)
 
-    def deliverPackage(self, distance, ID, currentTime):
+    def updateDistance(self, distance):
         self.distanceTraveled += float(distance)
-        self.location = self.getPackageByID(ID).getAddress()
+
+    def deliverPackage(self, distance, ID, currentTime):
+        # self.distanceTraveled += float(distance)
+        self.updateDistance(distance)
+        self.setLocation(self.getPackageByID(ID).getAddress())
         self.getPackageByID(ID).setStatus(
             ("Package ID " + str(ID) + " delivered at " + timeFloatToString(currentTime)))
         self.packageList.remove(self.getPackageByID(ID))
