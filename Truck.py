@@ -11,10 +11,10 @@ class Truck:
         self.ID = ID
         self.CAPACITY = 16
         self.packageList = []
-        self.time = 8.00
         self.distanceTraveled = 0.0
         self.location = "4001 South 700 East"
         self.status = 0
+        self.truckTime = 8.00
 
     def loadPackage(self, package):
         if len(self.packageList) < self.CAPACITY:
@@ -44,25 +44,31 @@ class Truck:
     def getLocation(self):
         return self.location
 
+    def getDistanceTraveled(self):
+        return self.distanceTraveled
+
     def printPackages(self):
         for package in self.packageList:
             print(package)
 
-    def updateDistance(self, distance, totalDistance):
-        totalDistance += float(distance)
-
-    def deliverPackage(self, distance, ID, currentTime, totalDistance):
-        # self.distanceTraveled += float(distance)
-        self.updateDistance(distance, totalDistance)
+    def deliverPackage(self, distance, ID):
         self.setLocation(self.getPackageByID(ID).getAddress())
         self.getPackageByID(ID).setStatus(
-            ("Package ID " + str(ID) + " delivered by truck #" + str(self.getID()) + " at " + timeFloatToString(currentTime)))
+            ("Package ID " + str(ID) + " delivered by truck #" + str(self.getID()) + " at "
+             + timeFloatToString(self.truckTime)))
         self.packageList.remove(self.getPackageByID(ID))
 
+    def getTruckTime(self):
+        return self.truckTime
+
+    def setTruckTime(self, inputTime):
+        self.truckTime = inputTime
+
     def updateTime(self, legDistance):
+        self.distanceTraveled += float(legDistance)
         SPEED = 18
-        legTime = legDistance / SPEED
-        return legTime
+        self.truckTime += (legDistance / SPEED)
+        return self.truckTime
 
     def getID(self):
         return self.ID

@@ -106,5 +106,4 @@ def loadAddressData(addressDataInput):
         for line in range(5):
             next(locationData)  # skip header
         for row in locationData:
-            # Currently extracting street address only. Eliminate second index for zip
             addressDataInput.append(row[1][1:-8])
