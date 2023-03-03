@@ -48,18 +48,21 @@ class Truck:
         for package in self.packageList:
             print(package)
 
-    def updateDistance(self, distance):
-        self.distanceTraveled += float(distance)
+    def updateDistance(self, distance, totalDistance):
+        totalDistance += float(distance)
 
-    def deliverPackage(self, distance, ID, currentTime):
+    def deliverPackage(self, distance, ID, currentTime, totalDistance):
         # self.distanceTraveled += float(distance)
-        self.updateDistance(distance)
+        self.updateDistance(distance, totalDistance)
         self.setLocation(self.getPackageByID(ID).getAddress())
         self.getPackageByID(ID).setStatus(
-            ("Package ID " + str(ID) + " delivered at " + timeFloatToString(currentTime)))
+            ("Package ID " + str(ID) + " delivered by truck #" + str(self.getID()) + " at " + timeFloatToString(currentTime)))
         self.packageList.remove(self.getPackageByID(ID))
 
-    def updateTime(self, distance):
+    def updateTime(self, legDistance):
         SPEED = 18
-        legTime = distance / SPEED
+        legTime = legDistance / SPEED
         return legTime
+
+    def getID(self):
+        return self.ID

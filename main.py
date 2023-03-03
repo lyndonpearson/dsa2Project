@@ -21,7 +21,7 @@ if __name__ == '__main__':
             optionTime = input("Please enter time in format HH:MM ")
             (h, m) = optionTime.split(':')
             inputTime = float(h) + float(m) / 60
-            print("####### PACKAGE STATUS REPORT AT " + optionTime + ": ###################")
+            print("###################### PACKAGE STATUS REPORT AT " + optionTime + ": ##########################")
             packageDeliveryProgram(packageTable, inputTime)
         elif option == "3":
             isExit = False
