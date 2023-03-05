@@ -1,11 +1,8 @@
-def timeFloatToString(inputString):
-    hours = int(inputString)
-    minutes = (inputString * 60) % 60
-    seconds = (inputString * 3600) % 60
-    timeStamp = "%d:%02d:%02d" % (hours, minutes, seconds)
-    return timeStamp
+from manageData import timeFloatToString
 
 
+# This file contains the Truck class definition. Truck objects are created
+# and fields assigned in the PackageDeliveryProgram.py
 class Truck:
     def __init__(self, ID):
         self.ID = ID
@@ -16,6 +13,7 @@ class Truck:
         self.status = 0
         self.truckTime = 8.00
 
+    # Truck method that adds an input package to its list
     def loadPackage(self, package):
         if len(self.packageList) < self.CAPACITY:
             self.packageList.append(package)
@@ -47,11 +45,10 @@ class Truck:
     def getDistanceTraveled(self):
         return self.distanceTraveled
 
-    def printPackages(self):
-        for package in self.packageList:
-            print(package)
-
-    def deliverPackage(self, distance, ID):
+    # Truck class method that given a package ID, sets
+    # the truck location. It then updates the package delivery
+    # with a timestamp and removes the package from its list
+    def deliverPackage(self, ID):
         self.setLocation(self.getPackageByID(ID).getAddress())
         self.getPackageByID(ID).setStatus(
             ("Package ID " + str(ID) + " delivered by truck #" + str(self.getID()) + " at "
@@ -64,6 +61,9 @@ class Truck:
     def setTruckTime(self, inputTime):
         self.truckTime = inputTime
 
+    # Truck class method that given an input delivery leg distance,
+    # updates the total distance traveled as well as the time.
+    # The updated time is returned
     def updateTime(self, legDistance):
         self.distanceTraveled += float(legDistance)
         SPEED = 18

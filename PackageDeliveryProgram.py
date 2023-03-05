@@ -3,8 +3,11 @@ from Truck import Truck, timeFloatToString
 from manageData import loadPackageData, loadDistanceData, loadAddressData
 
 
-def packageDeliveryProgram(hashTableInput, printTime=9999):
+# This program is called by main.py and, depending on which option
+# either runs to completion and prints out completion time & total miles
+# or stops at the specified time and prints status for all packages.
 
+def packageDeliveryProgram(hashTableInput, printTime=9999):
     printTime = float(printTime)
     loadPackageData('WGUPS Package File.csv', hashTableInput)
 
@@ -16,63 +19,87 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
     loadDistanceData(distanceData)
     loadAddressData(addressData)
 
-    # TRUCK 1 SECTION HERE #######################################
+    # 3 Trucks created for the delivery system
     Truck1 = Truck(1)
     Truck2 = Truck(2)
     Truck3 = Truck(3)
 
-    testList = []
+    # A list storing all packages
+    completePackageList = []
     for i in range(41):
-        testList.append(hashTableInput.search(i))
+        completePackageList.append(hashTableInput.searchHashTable(i))
 
+    # Manual package assignment, by ID, to trucks 1/2/3. All package constraints
+    # are met by this assignment
     PackageIdList1 = [2, 4, 5, 7, 14, 15, 16, 19, 20, 21, 22, 24, 30, 33, 34, 37]
     PackageIdList2 = [3, 8, 9, 10, 11, 12, 18, 23, 27, 28, 31, 32, 35, 36, 38, 39]
     PackageIdList3 = [1, 6, 13, 17, 25, 26, 29, 40]
-    # LOAD PACKAGES INTO TRUCKS HERE
+
+    # Loop through all packages and load them into the assigned truck
     for i in range(41):
         if i in PackageIdList1:
-            Truck1.loadPackage(testList[i])
+            Truck1.loadPackage(completePackageList[i])
         elif i in PackageIdList2:
-            Truck2.loadPackage(testList[i])
+            Truck2.loadPackage(completePackageList[i])
         elif i in PackageIdList3:
-            Truck3.loadPackage(testList[i])
+            Truck3.loadPackage(completePackageList[i])
 
+    # Truck 1 departs immediately at 0800. While there are remaining packages in the truck,
+    # they are delivered one address at a time.
     while len(Truck1.packageList) > 0:
         if RouteAndDeliver(Truck1, addressData, distanceData, printTime, hashTableInput):
             return
-        # Start truck 3 after 9:05AM
+        # Truck 3 departs after 0905 and delivers packages one address at a time
         if Truck1.getTruckTime() > 9.084 and len(Truck3.packageList) > 0:
             if RouteAndDeliver(Truck3, addressData, distanceData, printTime, hashTableInput):
                 return
+    # Once all packages from truck 1 are delivered, the truck's
+    # status is set to complete and it returns to the hub
     Truck1.setStatus(1)
     returnToHub(Truck1, addressData, distanceData)
 
+    # Truck 3 continues delivering its remaining packages, one address at a time
     while len(Truck3.packageList) > 0:
         if RouteAndDeliver(Truck3, addressData, distanceData, printTime, hashTableInput):
             return
+        # Truck 2 sets its local time of departure to truck 1's return to hub.
+        # It then begins delivering packages one address at a time.
         Truck2.setTruckTime(Truck1.getTruckTime())
         if RouteAndDeliver(Truck2, addressData, distanceData, printTime, hashTableInput):
             return
 
+    # Once all packages from truck 3 are delivered, the truck's
+    # status is set to complete and it returns to the hub
     Truck3.setStatus(1)
     returnToHub(Truck3, addressData, distanceData)
 
+    # Truck 2 finishes its delivery of remaining packages
     while len(Truck2.packageList) > 0:
         if RouteAndDeliver(Truck2, addressData, distanceData, printTime, hashTableInput):
             return
+
+    # Once all packages from truck 2 are delivered, the truck's
+    # status is set to complete and it returns to the hub
     Truck2.setStatus(1)
     returnToHub(Truck2, addressData, distanceData)
 
+    # If all trucks have completed their deliveries, and a status report time
+    # has not been specified, the total time is return to console. The
+    # total mileage for all trucks is calculated and return to console.
+    # If a time has been specified, then the status of all packages
+    # is printed to console at that time.
     if Truck1.getStatus() and Truck2.getStatus() and Truck3.getStatus():
         if printTime < 9999.0:
             for package in range(41):
                 hashTableInput.printPackageStatuses(package)
             print("##############################################################")
             print("\nAll packages delivered at: " + timeFloatToString(Truck2.getTruckTime()))
-            print("Total miles traveled: " + str(Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
+            print("Total miles traveled: " + str(
+                Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
             print("##############################################################")
         elif printTime < 99999:
             print("##############################################################")
             print("\nAll packages delivered at: " + timeFloatToString(Truck2.getTruckTime()))
-            print("Total miles traveled: " + str(Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
+            print("Total miles traveled: " + str(
+                Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
             print("##############################################################")

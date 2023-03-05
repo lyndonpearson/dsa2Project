@@ -4,7 +4,15 @@ from PackageDeliveryProgram import packageDeliveryProgram
 
 packageTable = PackageHashTable()
 
-# main - START
+# The main file called first in the program.
+# If the user presses 1, the entire package
+# delivery program is executed and total stats
+# are displayed to console.
+# If the user presses 2, they are prompted for
+# a time. The package delivery program is ran
+# until that time, at which a complete status
+# report of all packages is displayed to console.
+# If the user presses 3, the program terminates
 if __name__ == '__main__':
 
     # loop until user is satisfied
