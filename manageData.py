@@ -9,6 +9,10 @@ class PackageHashTable:
     # Constructor with optional initial capacity parameter
     # which is set to 40 by default. 40 empty lists
     # are appended to the object.
+
+    # The population of the hash table is an O(n) operation
+    # as it iterates through the number of packages to create
+    # a list at each location
     def __init__(self, initial_capacity=40):
         # initialize the hash table with empty bucket list entries.
         self.table = []
@@ -20,6 +24,12 @@ class PackageHashTable:
     # the pairs to find the one matching the input key.
     # once found, the associated value (a Package object)
     # has its status method called and printed to console
+
+    # The return of the index list given a key is an O(1)
+    # operation since it is independent of data size.
+    # The search through the index list is an O(n) operation
+    # where n is the number of key-value pairs at the given
+    # index list
     def printPackageStatuses(self, key):
         # get the bucket list where this key would be.
         index = hash(key) % len(self.table)
@@ -37,6 +47,10 @@ class PackageHashTable:
     # PackageHashTable. If the object is already present, the method
     # returns True. If the object is not present, the key-value pair
     # (package ID - Package object) is appended to the "bucket"
+
+    # The insertPackage method is an O(1) operation
+    # since a single key is hashed and a single item
+    # is stored
     def insertPackage(self, key, item):
         # get the bucket list where this item will go.
         index = hash(key) % len(self.table)
@@ -59,6 +73,11 @@ class PackageHashTable:
     # This method, given the input key, identifies the corresponding
     # "bucket" via hash function. It then searches through key-value
     # pairs and if there is a matching key, returns its associated value (Package object)
+
+    # The searchHashTable method is an O(1) operation
+    # since a single key is hashed. The search
+    # operation is O(n) in the case of multiple items
+    # stored in that location
     def searchHashTable(self, key):
         # get the bucket list where this key would be.
         index = hash(key) % len(self.table)
@@ -75,6 +94,11 @@ class PackageHashTable:
     # This method, given the input key, identifies the corresponding
     # "bucket" via the hash function. It then searches for a matching
     # key and, if found, removes that key-value pair from the hash table
+
+    # The removePackage method is an O(1) operation
+    # for hashing the single key. The search
+    # operation is O(n) in the case of multiple items
+    # stored in that location
     def removePackage(self, key):
         # get the bucket list where this item will be removed from.
         index = hash(key) % len(self.table)
@@ -92,11 +116,16 @@ class PackageHashTable:
 # uses the file data to create Package objects (each object
 # created from one file row). These objects are then stored
 # in the hash table via its insertPackage method
+
+
 def loadPackageData(fileName, hashTable):
     with open(fileName) as packageFile:
         packageData = csv.reader(packageFile, delimiter=',')
         for line in range(8):
             next(packageData)  # skip header
+        # Looping through the package data file is an O(n)
+        # operation with n referring to the number of data rows
+        # in the file
         for package in packageData:
             packageID = int(package[0])
             packageAddress = package[1]
@@ -107,9 +136,10 @@ def loadPackageData(fileName, hashTable):
             packageMass = int(package[6])
             packageNotes = package[7]
 
+            # The creation of a Package object is an O(1) operation
             newPackage = Package(packageID, packageAddress, packageCity, packageState, packageZip,
                                  packageDelivery, packageMass, packageNotes, " at HUB")
-
+            # The inseration of a Package object into the hash table is an O(1) operation
             hashTable.insertPackage(packageID, newPackage)
 
 
@@ -123,6 +153,9 @@ def loadDistanceData(distanceDataInput):
         locationData = csv.reader(locationFile, delimiter=',')
         for line in range(5):
             next(locationData)  # skip header
+        # Looping through the distance data file is an O(n)
+        # operation with n referring to the number of data rows
+        # in the file
         for row in locationData:
             readString = row[2:]
             intConversion = list(map(float, readString))
@@ -138,6 +171,9 @@ def loadAddressData(addressDataInput):
         locationData = csv.reader(locationFile, delimiter=',')
         for line in range(5):
             next(locationData)  # skip header
+        # Looping through the address data file is an O(n)
+        # operation with n referring to the number of data rows
+        # in the file
         for row in locationData:
             addressDataInput.append(row[1][1:-8])
 

@@ -1,4 +1,5 @@
 # LYNDON PEARSON STUDENT ID: 010389649
+# See "Documentation" folder for algorith overview Word document
 from manageData import PackageHashTable
 from PackageDeliveryProgram import packageDeliveryProgram
 

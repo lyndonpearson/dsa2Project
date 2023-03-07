@@ -5,6 +5,9 @@ def GreedyAlgorithm(Truck, addressList, distanceList):
     minimumDistance = 9999
     currentID = 0
     startIndex = addressList.index(Truck.location)
+    # For this block of code in the greedy algorithm, big-O complexity is O(n)
+    # for a single call of the greedy algorithm function as it loops through
+    # the list of packages to identify which one has the smallest distance.
     for i in range(len(Truck.packageList)):
         if Truck.getPackageByIndex(i).getID() == 25 or Truck.getPackageByIndex(i).getID() == 26:
             Truck.getPackageByIndex(i).setAddress("5383 S 900 East #104")

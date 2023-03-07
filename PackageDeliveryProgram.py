@@ -26,6 +26,9 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
 
     # A list storing all packages
     completePackageList = []
+    # Populating the package list with package objects
+    # is an O(n) operation since it loops through the number
+    # of packages. Searching the hash table is an O(1) operation.
     for i in range(41):
         completePackageList.append(hashTableInput.searchHashTable(i))
 
@@ -35,7 +38,8 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
     PackageIdList2 = [3, 8, 9, 10, 11, 12, 18, 23, 27, 28, 31, 32, 35, 36, 38, 39]
     PackageIdList3 = [1, 6, 13, 17, 25, 26, 29, 40]
 
-    # Loop through all packages and load them into the assigned truck
+    # Loop through all packages and load them into the assigned truck.
+    # O(n) operation
     for i in range(41):
         if i in PackageIdList1:
             Truck1.loadPackage(completePackageList[i])
@@ -46,6 +50,9 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
 
     # Truck 1 departs immediately at 0800. While there are remaining packages in the truck,
     # they are delivered one address at a time.
+
+    # This is an O(n) operation, since for each package in the truck
+    # this block of called is executed.
     while len(Truck1.packageList) > 0:
         if RouteAndDeliver(Truck1, addressData, distanceData, printTime, hashTableInput):
             return
@@ -54,11 +61,14 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
             if RouteAndDeliver(Truck3, addressData, distanceData, printTime, hashTableInput):
                 return
     # Once all packages from truck 1 are delivered, the truck's
-    # status is set to complete and it returns to the hub
+    # status is set to complete, and it returns to the hub
     Truck1.setStatus(1)
     returnToHub(Truck1, addressData, distanceData)
 
     # Truck 3 continues delivering its remaining packages, one address at a time
+
+    # This is an O(n) operation, since for each package in the truck
+    # this block of called is executed.
     while len(Truck3.packageList) > 0:
         if RouteAndDeliver(Truck3, addressData, distanceData, printTime, hashTableInput):
             return
@@ -69,17 +79,20 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
             return
 
     # Once all packages from truck 3 are delivered, the truck's
-    # status is set to complete and it returns to the hub
+    # status is set to complete, and it returns to the hub
     Truck3.setStatus(1)
     returnToHub(Truck3, addressData, distanceData)
 
     # Truck 2 finishes its delivery of remaining packages
+
+    # This is an O(n) operation, since for each package in the truck
+    # this block of called is executed.
     while len(Truck2.packageList) > 0:
         if RouteAndDeliver(Truck2, addressData, distanceData, printTime, hashTableInput):
             return
 
     # Once all packages from truck 2 are delivered, the truck's
-    # status is set to complete and it returns to the hub
+    # status is set to complete, and it returns to the hub
     Truck2.setStatus(1)
     returnToHub(Truck2, addressData, distanceData)
 
