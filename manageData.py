@@ -36,6 +36,7 @@ class PackageHashTable:
         index_list = self.table[index]
 
         # search for the key in the bucket list
+        # O(n) operation since searching through list
         for key_value in index_list:
             # print (key_value)
             if key_value[0] == key:
@@ -84,6 +85,7 @@ class PackageHashTable:
         index_list = self.table[index]
 
         # search for the key in the bucket list
+        # O(n) operation since looping through index list
         for key_value in index_list:
             # print (key_value)
             if key_value[0] == key:
@@ -101,10 +103,12 @@ class PackageHashTable:
     # stored in that location
     def removePackage(self, key):
         # get the bucket list where this item will be removed from.
+        # O(1) operation to retrieve index and list
         index = hash(key) % len(self.table)
         index_list = self.table[index]
 
         # remove the item from the bucket list if it is present.
+        # O(n) operation to loop through list
         for key_value in index_list:
             # print (key_value)
             if key_value[0] == key:
@@ -117,7 +121,8 @@ class PackageHashTable:
 # created from one file row). These objects are then stored
 # in the hash table via its insertPackage method
 
-
+# O(n) operation since the program extracts data from each row
+# to create Package objects and insert them into hash table
 def loadPackageData(fileName, hashTable):
     with open(fileName) as packageFile:
         packageData = csv.reader(packageFile, delimiter=',')
@@ -139,7 +144,7 @@ def loadPackageData(fileName, hashTable):
             # The creation of a Package object is an O(1) operation
             newPackage = Package(packageID, packageAddress, packageCity, packageState, packageZip,
                                  packageDelivery, packageMass, packageNotes, " at HUB")
-            # The inseration of a Package object into the hash table is an O(1) operation
+            # The insertion of a Package object into the hash table is an O(1) operation
             hashTable.insertPackage(packageID, newPackage)
 
 
@@ -148,6 +153,9 @@ def loadPackageData(fileName, hashTable):
 # uses the file data to create a 2-D list containing
 # distances at each element. The elements are converted
 # to floats before storage into the input distance list
+
+# O(n) operation since the method extracts data from each
+# row to build the distance matrix
 def loadDistanceData(distanceDataInput):
     with open('WGUPS Distance Table.csv') as locationFile:
         locationData = csv.reader(locationFile, delimiter=',')
@@ -166,6 +174,9 @@ def loadDistanceData(distanceDataInput):
 # opens the address data file, skips the header, and
 # extract the address from reach row. The addresses
 # are stored as elements in the input address list.
+
+# O(n) operation since the method extracts data from each row
+# to populate the address list
 def loadAddressData(addressDataInput):
     with open('WGUPS Distance Table.csv') as locationFile:
         locationData = csv.reader(locationFile, delimiter=',')
@@ -181,6 +192,9 @@ def loadAddressData(addressDataInput):
 # Function that given a time input, parses it
 # into hours, minutes, and seconds in the format
 # HH:MM:SS. This format is returned.
+
+# This function is an O(1) operation as it converts
+# an input string to a single time format (HH:MM:SS)
 def timeFloatToString(inputString):
     hours = int(inputString)
     minutes = (inputString * 60) % 60

@@ -39,7 +39,8 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
     PackageIdList3 = [1, 6, 13, 17, 25, 26, 29, 40]
 
     # Loop through all packages and load them into the assigned truck.
-    # O(n) operation
+    # O(n) operation as each element in the package list is accessed
+    # in numerical order
     for i in range(41):
         if i in PackageIdList1:
             Truck1.loadPackage(completePackageList[i])
@@ -57,11 +58,15 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
         if RouteAndDeliver(Truck1, addressData, distanceData, printTime, hashTableInput):
             return
         # Truck 3 departs after 0905 and delivers packages one address at a time
+        # Also O(n) operation, since for each package in the truck this code
+        # is executed
         if Truck1.getTruckTime() > 9.084 and len(Truck3.packageList) > 0:
             if RouteAndDeliver(Truck3, addressData, distanceData, printTime, hashTableInput):
                 return
     # Once all packages from truck 1 are delivered, the truck's
     # status is set to complete, and it returns to the hub
+    # O(1) operation since the return distance to hub is calculated
+    # and added to the truck's total
     Truck1.setStatus(1)
     returnToHub(Truck1, addressData, distanceData)
 
@@ -74,12 +79,16 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
             return
         # Truck 2 sets its local time of departure to truck 1's return to hub.
         # It then begins delivering packages one address at a time.
+        # Also O(n) operation, since for each package in the truck this code
+        # is executed
         Truck2.setTruckTime(Truck1.getTruckTime())
         if RouteAndDeliver(Truck2, addressData, distanceData, printTime, hashTableInput):
             return
 
     # Once all packages from truck 3 are delivered, the truck's
     # status is set to complete, and it returns to the hub
+    # O(1) operation since the return distance to hub is calculated
+    # and added to the truck's total
     Truck3.setStatus(1)
     returnToHub(Truck3, addressData, distanceData)
 
@@ -93,6 +102,8 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
 
     # Once all packages from truck 2 are delivered, the truck's
     # status is set to complete, and it returns to the hub
+    # O(1) operation since the return distance to hub is calculated
+    # and added to the truck's total
     Truck2.setStatus(1)
     returnToHub(Truck2, addressData, distanceData)
 
@@ -101,18 +112,15 @@ def packageDeliveryProgram(hashTableInput, printTime=9999):
     # total mileage for all trucks is calculated and return to console.
     # If a time has been specified, then the status of all packages
     # is printed to console at that time.
+
+    # The status report is an O(n) operation since it accesses the Package
+    # objects in numerical order and prints their status to console.
     if Truck1.getStatus() and Truck2.getStatus() and Truck3.getStatus():
-        if printTime < 9999.0:
-            for package in range(41):
-                hashTableInput.printPackageStatuses(package)
-            print("##############################################################")
-            print("\nAll packages delivered at: " + timeFloatToString(Truck2.getTruckTime()))
-            print("Total miles traveled: " + str(
-                Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
-            print("##############################################################")
-        elif printTime < 99999:
-            print("##############################################################")
-            print("\nAll packages delivered at: " + timeFloatToString(Truck2.getTruckTime()))
-            print("Total miles traveled: " + str(
-                Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
-            print("##############################################################")
+        for package in range(41):
+            hashTableInput.printPackageStatuses(package)
+        print("##############################################################")
+        print("\nAll packages delivered at: " + timeFloatToString(Truck2.getTruckTime()))
+        print("Total miles traveled: " + str(
+            Truck1.getDistanceTraveled() + Truck2.getDistanceTraveled() + Truck3.getDistanceTraveled()) + "\n")
+        print("##############################################################")
+

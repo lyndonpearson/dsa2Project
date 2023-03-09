@@ -1,6 +1,9 @@
 # This method is passed in a Truck object, the address & distance lists. For each function call,
 # the current location is identified in addition to the closest package. The closest package has its
 # ID return in addition to the distance for its delivery.
+
+# This function is O(n) complexity is it iterates through the package list
+# of the input Truck object.
 def GreedyAlgorithm(Truck, addressList, distanceList):
     minimumDistance = 9999
     currentID = 0

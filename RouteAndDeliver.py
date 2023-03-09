@@ -7,6 +7,10 @@ from GreedyAlgorithm import GreedyAlgorithm
 # and the function returns a value of 0.
 # If an input time is given and the next delivery would exceed it, the package statuses are all
 # printed to console and the function returns 1
+
+# Total operation can be considered O(n) since the greedy algorithm is O(n) and the
+# package status print out is also O(n). Adding the two together produces O(n+n) = O(2n) = O(n)
+# since the coefficient can be discarded.
 def RouteAndDeliver(truckInput, addressInput, distanceInput, printTime, hashTableInput):
     # The greedy algorith is an O(n) operation since it iterates through the packages
     # to find and return the closest one.
